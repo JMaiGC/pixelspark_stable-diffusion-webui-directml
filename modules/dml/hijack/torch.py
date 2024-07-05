@@ -7,9 +7,9 @@ CondFunc('torchsde._brownian.brownian_interval._randn', lambda _, size, dtype, d
 CondFunc('torch.Tensor.new', lambda orig, self, *args, **kwargs: orig(self.cpu(), *args, **kwargs).to(self.device), lambda orig, self, *args, **kwargs: torch.dml.is_directml_device(self.device))
 
 
-# https://github.com/lshqqytiger/stable-diffusion-webui-directml/issues/436
+# https://github.com/lshqqytiger/stable-diffusion-webui-amdgpu/issues/436
 _pow_ = torch.Tensor.pow_
-def pow_(self: torch.Tensor, *args, **kwargs):
+def pow_(self: torch.Tensor, *args, **kwargs) -> torch.Tensor:
     if self.dtype == torch.float64:
         return _pow_(self.cpu(), *args, **kwargs).to(self.device)
     return _pow_(self, *args, **kwargs)
